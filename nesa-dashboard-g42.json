@@ -1,0 +1,55 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# NESA Compliance Dashboard – G42 Demo (CA-07)\r\n\r\nContinuous compliance monitoring aligned to UAE NESA Information Assurance Standards (CA-07).  \r\nVisualizes Azure Policy compliance state, non-compliant resources, and posture for sovereign/AI cloud environments like G42.\r\n\r\n**Current Status**: 0% overall compliance on 9 resources (demo setup)."
+      },
+      "name": "text - 0"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "policyresources\r\n| where type == \"microsoft.policyinsights/policystates\"\r\n| where properties.complianceState == \"NonCompliant\"\r\n| project Resource = tostring(properties.resourceId),\r\n          Policy = tostring(properties.policyDefinitionName),\r\n          Reason = tostring(properties.complianceReason)\r\n| limit 10",
+        "size": 0,
+        "title": "Top Non-Compliant Resources",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "/subscriptions/6003e2a5-1429-498e-b526-7d2493d85d58"
+        ],
+        "visualization": "table"
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "policyresources\r\n| where type == \"microsoft.policyinsights/policystates\"\r\n| extend complianceState = tostring(properties.complianceState)\r\n| summarize Count = count() by complianceState\r\n",
+        "size": 2,
+        "title": "Overall Compliance State (NESA CA-07)",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "/subscriptions/6003e2a5-1429-498e-b526-7d2493d85d58"
+        ],
+        "visualization": "piechart"
+      },
+      "name": "query - 1"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "### Summary & NESA CA-07 Mapping\r\n- Total policy states: 294\r\n- NonCompliant: 168 (57%)\r\n- Compliant: 126 (43%)\r\n- Dashboard demonstrates continuous visibility into Azure Policy compliance posture and violations.\r\n- Directly supports NESA CA-07 requirements (ongoing assurance, evidence collection, reporting).\r\n- Ideal for UAE gov/semi-gov entities (e.g., G42, ADNOC, DEWA) using Microsoft cloud security benchmark."
+      },
+      "name": "text - 3"
+    }
+  ],
+  "fallbackResourceIds": [
+    "azure monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
