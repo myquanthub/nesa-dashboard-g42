@@ -30,3 +30,15 @@ policyresources
 | extend complianceState = tostring(properties.complianceState)
 | summarize Count = count() by complianceState
 | render piechart
+
+Non-Compliant Grid
+kql
+policyresources
+| where type == "microsoft.policyinsights/policystates"
+| where properties.complianceState == "NonCompliant"
+| project Resource = tostring(properties.resourceId),
+          Policy = tostring(properties.policyDefinitionName),
+          Reason = tostring(properties.complianceReason)
+| limit 10
+
+#UAECyber #NESA #AzureSecurity #CloudSecurity #G42
